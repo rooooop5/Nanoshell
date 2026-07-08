@@ -1,0 +1,17 @@
+# Build files
+obj/
+bin/
+*.o
+a.out
+
+# LSP / tooling
+compile_commands.json
+
+# OS junk
+.DS_Store
+
+#cache
+.cache
+
+#clang-format file
+.clang-format
