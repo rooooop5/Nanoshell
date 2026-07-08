@@ -1,7 +1,10 @@
 #include <curl/curl.h>
-#include "utils/ollama_client.h"
-#include "cJSON/cJSON.h"
 #include <string.h>
+
+#include "cJSON/cJSON.h"
+
+#include "utils/ollama_client.h"
+#include "utils/allocaters.h"
 
 typedef struct
 {
@@ -61,7 +64,7 @@ size_t write_callback(void* ptr,size_t size,size_t nmemb,void* data)
 
     Buffer* buffer=(Buffer*)data;
 
-    buffer->buffer=realloc(buffer->buffer,buffer->size+new_size+1);
+    buffer->buffer=xrealloc(buffer->buffer,buffer->size+new_size+1);
 
     memcpy(buffer->buffer+buffer->size,ptr,new_size);
 

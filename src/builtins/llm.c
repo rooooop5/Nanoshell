@@ -1,12 +1,14 @@
-#include "builtins/llm.h"
-#include "builtins/builtins.h"
-#include "cJSON/cJSON.h"
-#include "utils/ollama_client.h"
-#include "utils/string_constructor.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "cJSON/cJSON.h"
+
+#include "utils/ollama_client.h"
+#include "utils/string_constructor.h"
+#include "builtins/llm.h"
+#include "builtins/builtins.h"
 
 #define SYSTEM_PROMPT_FORMAT                                                   \
     "You are Nix, the built-in AI assistant for Nanoshell.\n"                  \
@@ -260,7 +262,7 @@ void chat(char *prompt)
 
     if (!OLLAMA_API_KEY)
     {
-        write(STDOUT_FILENO, "could not find OLLAMA_API_KEY", 29);
+        fprintf(stderr, "nix: could not find OLLAMA_API_KEY\n");
         cJSON_Delete(ollama_request);
         free(json_request);
         return;

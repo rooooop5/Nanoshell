@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include "utils/time.h"
+#include "utils/allocaters.h"
 
 #define TIMESTAMP_FORMAT "%Y-%m-%d %H:%M:%S"
 
@@ -14,7 +15,7 @@ char *timestamp()
 {
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
-    char *buffer = (char *)malloc(100 * sizeof(char));
+    char *buffer = (char *)xmalloc(100 * sizeof(char));
     strftime(buffer, 100, TIMESTAMP_FORMAT, t);
     return buffer;
 }

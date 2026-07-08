@@ -1,10 +1,11 @@
-#include "core/execute.h"
-#include "builtins/builtins.h"
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "core/execute.h"
+#include "builtins/builtins.h"
 
 int nsh_execute_builtins(char **args)
 {
@@ -23,7 +24,6 @@ int nsh_execute_binaries(char **args)
 
     pid = fork();
 
-    //child process
     if (pid == 0)
     {
         setpgid(0, 0);
@@ -35,7 +35,6 @@ int nsh_execute_binaries(char **args)
         }
         exit(EXIT_FAILURE);
     }
-    //parent process
     else if (pid > 0)
     {
         setpgid(pid, pid);
@@ -53,7 +52,6 @@ int nsh_execute_binaries(char **args)
         if (WIFSIGNALED(status))
             printf("Process killed: %d\n", pid);
     }
-    //fork failed
     else
     {
         perror("nsh");

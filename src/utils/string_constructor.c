@@ -3,9 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "utils/string_constructor.h"
 
-#define CONCATENATE_BUFFER_LEN 100
+#include "utils/string_constructor.h"
+#include "utils/allocaters.h"
+
 
 typedef struct Concatenate_Buffer
 {
@@ -19,7 +20,7 @@ Concatenate_Buffer create_buffer()
     Concatenate_Buffer buffer;
     buffer.capacity = CONCATENATE_BUFFER_LEN;
     buffer.pointer = 0;
-    buffer.buffer = (char *)malloc(buffer.capacity * sizeof(char));
+    buffer.buffer = (char *)xmalloc(buffer.capacity * sizeof(char));
     return buffer;
 }
 
@@ -37,7 +38,7 @@ void _concatenate(Concatenate_Buffer *buffer, char *str)
         if (buffer->pointer == buffer->capacity - 1)
         {
             buffer->capacity *= 2;
-            buffer->buffer = (char *)realloc(buffer->buffer,
+            buffer->buffer = (char *)xrealloc(buffer->buffer,
                                              buffer->capacity * sizeof(char));
         }
         buffer->buffer[buffer->pointer++] = str[i++];

@@ -27,7 +27,7 @@ char *nsh_read_input(void)
     ssize_t read_return;
     char *buffer;
     int buffer_capacity = BUFFER_SIZE, buffer_pointer = 0;
-    buffer = (char *)xcalloc(buffer_capacity, sizeof(char)); // buffer is allocated
+    buffer = (char *)xcalloc(buffer_capacity, sizeof(char)); 
     while (1)
     {
         if (buffer_pointer == buffer_capacity - 1)
@@ -38,14 +38,12 @@ char *nsh_read_input(void)
         read_return = read(STDIN_FILENO, buffer + buffer_pointer, 1);
         if (!read_return)
         {
-            // early return, need to free buffer
             (*input_state_ptr) = INPUT_TERMINATED;
             free(buffer); 
             return NULL;
         }
         else if (read_return == -1 && errno == EINTR)
         {
-            // early return, need to free buffer
             (*input_state_ptr) = INPUT_INTERRRUPTED;
             free(buffer);
             return NULL;
@@ -65,8 +63,8 @@ char *nsh_read_input(void)
                 {
                     (*input_state_ptr) = INPUT_OK;
                     buffer[buffer_pointer] = '\0';
-                    char *trimmed = trim_trailing_whitespace(buffer); // this needs to freed by caller func
-                    free(buffer); // final free, buffer is freed
+                    char *trimmed = trim_trailing_whitespace(buffer); 
+                    free(buffer); 
                     return trimmed;
                 }
             }
@@ -85,8 +83,8 @@ char **nsh_parse_args(char *buffer, char separator)
 
     ParsingState state = NORMAL;
 
-    temp = (char *)xcalloc(temp_capacity, sizeof(char)); // owned by this function
-    args = (char **)xcalloc(args_capacity, sizeof(char *)); // owned by the caller
+    temp = (char *)xcalloc(temp_capacity, sizeof(char));
+    args = (char **)xcalloc(args_capacity, sizeof(char *)); 
 
     int temp_pointer = 0, buffer_pointer = 0, args_pointer = 0;
 

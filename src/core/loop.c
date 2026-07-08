@@ -8,15 +8,8 @@
 #include "core/loop.h"
 #include "core/parser.h"
 
-#define MAGENTA "\033[35m"
-#define BLUE "\033[34m"
-#define CYAN "\033[36m"
-#define RESET "\033[0m"
-
 InputState input_state = INPUT_OK;
 InputState *input_state_ptr = &input_state;
-
-//int count = 0;
 
 void ignore_signal()
 {
@@ -57,33 +50,32 @@ void nsh_loop()
     do
     {
         tcsetpgrp(STDIN_FILENO, shell_pgid);
-        char *base = nsh_prompt_pwd(); // two allocation
+        char *base = nsh_prompt_pwd();
         printf(BLUE "[" MAGENTA "nsh" BLUE "]" CYAN " %s " RESET, base + 1);
         fflush(stdout);
-        char *buffer = nsh_read_input();// one allocation
+        char *buffer = nsh_read_input();
         if (input_state == INPUT_TERMINATED)
         {
-            free(base);// one free
-            free(buffer); // two free
+            free(base);
+            free(buffer);
             break;
         }
         else if (input_state == INPUT_EMPTY)
         {
-            //count++;
-            free(base); // one free 
-            free(buffer); // two free
+            free(base); 
+            free(buffer); 
             continue;
         }
         else if (input_state == INPUT_INTERRRUPTED)
         {
-            //count++;
-            free(base); // one free
-            free(buffer); // two free
+
+            free(base);
+            free(buffer);
             continue;
         }
         else
         {
-            args = nsh_parse_args(buffer, ' '); // 3 allocation
+            args = nsh_parse_args(buffer, ' '); 
             if(args==NULL)
             {
                 free(base);
@@ -96,10 +88,9 @@ void nsh_loop()
             {
                 free(args[i]);
             }
-            free(buffer); // one free
-            free(args); // two free
-            free(base); // three free
-            //count++;
+            free(buffer); 
+            free(args); 
+            free(base); 
         }
     } while (status);
 }
